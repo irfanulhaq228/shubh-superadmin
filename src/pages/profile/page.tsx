@@ -1,18 +1,33 @@
 import { useSelector } from "react-redux";
 
+import { useEffect, useState } from "react";
 import Navbar from "../../components/navbar";
 import Sidebar from "../../components/sidebar";
 import useColorScheme from "../../hooks/useColorScheme";
 
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaUsers } from "react-icons/fa";
+import { getAllAdminsApi } from "../../api/api";
 
 const Profile = ({ darkTheme }: any) => {
+
+  const [data, setData] = useState([]);
   const smallSidebar = useSelector((state: any) => state.smallSidebar);
   const dashboardDarkTheme = useSelector(
     (state: any) => state.dashboardDarkTheme
   );
   const colorScheme = useSelector((state: any) => state.colorScheme);
   const colors = useColorScheme(dashboardDarkTheme, colorScheme);
+
+  const fn_getAdmins = async () => {
+    const response = await getAllAdminsApi();
+    if (response?.status) {
+      setData(response?.data?.reverse());
+    }
+  };
+
+  useEffect(() => {
+    fn_getAdmins();
+  }, []);
 
   return (
     <div className={`min-h-[100vh]`} style={{ backgroundColor: colors.bg }}>
@@ -27,9 +42,9 @@ const Profile = ({ darkTheme }: any) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:sm:grid-cols-3 gap-[10px] sm:gap-[15px]">
             <Boxes
               colors={colors}
-              sub="Total Admin"
-              main={10}
-              icon={<FaUser className="text-[25px]" />}
+              sub="Total Admins"
+              main={data?.length || 0}
+              icon={<FaUsers className="text-[25px]" />}
             />
           </div>
         </div>

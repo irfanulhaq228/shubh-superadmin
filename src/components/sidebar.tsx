@@ -17,7 +17,7 @@ const Sidebar = ({ colors, path }: any) => {
   const fn_logout = () => {
     Cookies.remove('superAdminToken');
     navigate("/");
-  }
+  };
   return (
     <div
       className={`fixed min-h-[100vh] z-[9] shadow-lg lg:shadow-none transition-all duration-500 ${smallSidebar ? "w-[50px]" : "w-[250px]"

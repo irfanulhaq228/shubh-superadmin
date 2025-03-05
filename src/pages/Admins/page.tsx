@@ -68,7 +68,7 @@ const Admins = ({ darkTheme }: any) => {
           className={`relative p-[1px] transition-all duration-500 ${smallSidebar ? "ps-[50px]" : "ps-[50px] lg:ps-[250px]"
             }`}
         >
-          <Navbar pageName={"Admins"} darkTheme={darkTheme} colors={colors} />
+          <Navbar pageName={"Admins List"} darkTheme={darkTheme} colors={colors} />
           <div className="mt-[15px] px-[10px] sm:px-[20px]">
             <div className="mb-[15px] flex justify-end">
               <button
