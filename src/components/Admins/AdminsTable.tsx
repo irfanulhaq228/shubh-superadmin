@@ -18,8 +18,9 @@ const AdminsTable = ({ colors, data, fn_getAdmins }: any) => {
                             style={{ color: colors.text, backgroundColor: colors.light }}
                         >
                             <td className="ps-[5px]">Sr No.</td>
-                            <td>Admin Email</td>
+                            <td>Email</td>
                             <td>Domain</td>
+                            <td>Odd Rate</td>
                             <td>Account Wallet</td>
                             <td>Action</td>
                         </tr>
@@ -49,8 +50,9 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
 
     const [email, setEmail] = useState(admin?.email);
     const [domain, setDomain] = useState(admin?.domain);
+    const [oddRate, setOddRate] = useState(admin?.oddRate);
     const [password, setPassword] = useState(admin?.password);
-
+    
     const [passwordType, setPasswordType] = useState("password");
 
     const handleSwitchChange = async (checked: boolean, e: React.MouseEvent<HTMLElement>) => {
@@ -80,11 +82,20 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
     };
     const fn_edit = async (e: FormEvent) => {
         e.preventDefault();
-        if (email === "" || domain === "" || password === "") {
+        if (email === "" || domain === "" || password === "" || oddRate === "") {
             return toast.error("Fill All Fields");
         }
         const data = {
-            email, domain, password
+            email, domain, password, oddRate
+        }
+        if(email === admin.email && domain === admin.domain && password === admin.password && oddRate === admin.oddRate){
+            return toast.error("No Changes Found");
+        };
+        if(email === admin.email){
+            delete data.email;
+        };
+        if(domain === admin.domain){
+            delete data.domain;
         }
         const response = await editAdminApi(data, admin._id);
         if (response?.status) {
@@ -94,7 +105,7 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
         } else {
             toast.error(response?.message)
         }
-    }
+    };
     return (
         <>
             <tr
@@ -105,6 +116,7 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
                 <td className="ps-[5px]">{index}</td>
                 <td>{admin?.email}</td>
                 <td><a href={admin?.domain} target='__blank' className='hover:underline'>{admin?.domain}</a></td>
+                <td>{admin?.oddRate || 0}%</td>
                 <td><FaIndianRupeeSign className='inline-block me-[4px]' />{admin?.wallet}</td>
                 <td className='flex items-center h-[60px]'>
                     <Switch size="small" defaultChecked={admin.verified} title='disable' onClick={handleSwitchChange} />
@@ -112,7 +124,10 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
                     <button
                         className='text-[11px] rounded-[5px] ms-[10px] px-[10px] h-[30px] leading-[32px]'
                         style={{ backgroundColor: colors.text, color: colors.bg }}
-                        onClick={() => setGivePointsModel(!givePointsModel)}
+                        onClick={() => {
+                            setPoints(admin?.wallet);
+                            setGivePointsModel(!givePointsModel);
+                        }}
                     >
                         Give Points
                     </button>
@@ -132,7 +147,7 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
                 <p className="text-[22px] font-[700]">Give Poins to Admin</p>
                 <form className="pb-[15px] pt-[20px] flex flex-col gap-[10px]" onSubmit={fn_submit}>
                     <div className="flex flex-col">
-                        <p className="font-[500]">Enter Point to be given to Admin</p>
+                        <p className="font-[500]">Enter Points</p>
                         <input
                             type='number'
                             value={points}
@@ -187,6 +202,19 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
                         />
                         {passwordType === "password" && <FaRegEyeSlash className="cursor-pointer absolute right-[15px] bottom-[13px]" onClick={() => setPasswordType("text")} />}
                         {passwordType === "text" && <FaRegEye className=" cursor-pointer absolute right-[15px] bottom-[13px]" onClick={() => setPasswordType("password")} />}
+                    </div>
+                    <hr className="mt-[15px] mb-[10px]" />
+                    <div className="flex flex-col">
+                        <p className="font-[500]">Enter Odd Rate (%)*</p>
+                        <input
+                            value={oddRate}
+                            type="number"
+                            step={0.01}
+                            onChange={(e) => setOddRate(e.target.value)}
+                            required
+                            placeholder="Odd Rate"
+                            className="w-full h-[40px] border rounded-[10px] px-[10px] font-[500] text-[15px] focus:outline-none focus:border-gray-400"
+                        />
                     </div>
                     <button className="w-full rounded-[10px] mt-[18px] text-white flex justify-center items-center h-[40px] font-[500] text-[16px]" style={{ backgroundColor: colors.text }}>
                         Submit

@@ -4,7 +4,8 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { FormEvent, useEffect, useState } from "react";
 
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { AiOutlinePercentage } from "react-icons/ai";
+import { FaPlus, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 import Navbar from "../../components/navbar";
 import Sidebar from "../../components/sidebar";
@@ -13,6 +14,7 @@ import AdminsTable from "../../components/Admins/AdminsTable";
 import { createAdminApi, getAllAdminsApi } from "../../api/api";
 
 const Admins = ({ darkTheme }: any) => {
+
   const [data, setData] = useState([]);
   const smallSidebar = useSelector((state: any) => state.smallSidebar);
   const dashboardDarkTheme = useSelector((state: any) => state.dashboardDarkTheme);
@@ -24,6 +26,7 @@ const Admins = ({ darkTheme }: any) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [domain, setDomain] = useState("");
+  const [oddRate, setOddRate] = useState("");
   const [password, setPassword] = useState("");
 
   const fn_getAdmins = async () => {
@@ -40,11 +43,11 @@ const Admins = ({ darkTheme }: any) => {
 
   const fn_submit = async (e: FormEvent) => {
     e.preventDefault();
-    if (name === "" || email === "" || domain === "" || password === "") {
+    if (name === "" || email === "" || domain === "" || password === "" || oddRate === "") {
       return toast.error("Fill All Fields");
     }
     const data = {
-      name, email, domain, password
+      name, email, domain, password, oddRate
     }
     const response = await createAdminApi(data);
     if (response?.status) {
@@ -72,11 +75,11 @@ const Admins = ({ darkTheme }: any) => {
           <div className="mt-[15px] px-[10px] sm:px-[20px]">
             <div className="mb-[15px] flex justify-end">
               <button
-                className="w-[max-content] text-[15px] font-[500] rounded-[5px] px-[12px] py-[7px] lg:w-[200px]"
+                className="w-[max-content] text-[15px] font-[500] rounded-[5px] px-[12px] py-[7px] lg:w-[270px]"
                 style={{ backgroundColor: colors.text, color: colors.light }}
                 onClick={() => setCreateAdminModel(!createAdminModel)}
               >
-                Add Admin
+                <FaPlus className="inline-block mt-[-2px] mr-2" />Add New White Label Account
               </button>
             </div>
             <AdminsTable colors={colors} data={data} fn_getAdmins={fn_getAdmins} />
@@ -93,7 +96,7 @@ const Admins = ({ darkTheme }: any) => {
         style={{ fontFamily: "Roboto" }}
         width={600}
       >
-        <p className="text-[22px] font-[700]">Add Admin</p>
+        <p className="text-[22px] font-[700]">Add New White Label Account</p>
         <form className="py-[20px] flex flex-col gap-[10px]" onSubmit={fn_submit}>
           <div className="flex flex-col">
             <p className="font-[500]">Website Name*</p>
@@ -133,6 +136,20 @@ const Admins = ({ darkTheme }: any) => {
             />
             {passwordType === "password" && <FaRegEyeSlash className="cursor-pointer absolute right-[15px] bottom-[13px]" onClick={() => setPasswordType("text")} />}
             {passwordType === "text" && <FaRegEye className=" cursor-pointer absolute right-[15px] bottom-[13px]" onClick={() => setPasswordType("password")} />}
+          </div>
+          <hr className="mt-[15px] mb-[10px]" />
+          <div className="flex flex-col relative">
+            <p className="font-[500]">Enter Odd Rate (%)*</p>
+            <input
+              value={oddRate}
+              type="number"
+              step={0.01}
+              onChange={(e) => setOddRate(e.target.value)}
+              required
+              placeholder="Odd Rate"
+              className="w-full h-[40px] border rounded-[10px] px-[10px] font-[500] text-[15px] focus:outline-none focus:border-gray-400"
+            />
+            <AiOutlinePercentage className="cursor-pointer absolute right-[15px] bottom-[13px]" />
           </div>
           <button className="w-full rounded-[10px] mt-[18px] text-white flex justify-center items-center h-[40px] font-[500] text-[16px]" style={{ backgroundColor: colors.text }}>
             Submit

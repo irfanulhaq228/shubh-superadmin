@@ -49,7 +49,7 @@ const Sidebar = ({ colors, path }: any) => {
           smallSidebar={smallSidebar}
         />
         <Menus
-          title={"Admins"}
+          title={"White Labels"}
           colors={colors}
           pathEquals={"admins"}
           path={path}

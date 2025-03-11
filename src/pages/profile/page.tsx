@@ -42,7 +42,7 @@ const Profile = ({ darkTheme }: any) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:sm:grid-cols-3 gap-[10px] sm:gap-[15px]">
             <Boxes
               colors={colors}
-              sub="Total Admins"
+              sub="Total White Label Accounts"
               main={data?.length || 0}
               icon={<FaUsers className="text-[25px]" />}
             />

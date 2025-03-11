@@ -36,9 +36,9 @@ const GamesConfigurationTable = ({ colors, data, loading, setData, fn_getGames }
                             style={{ color: colors.text, backgroundColor: colors.light }}
                         >
                             <td className="ps-[5px]">Game</td>
-                            <td>Bets Running</td>
-                            <td>Current Bets Amount</td>
-                            <td>P/L Ratio</td>
+                            {/* <td>Bets Running</td> */}
+                            {/* <td>Current Bets Amount</td> */}
+                            {/* <td>P/L Ratio</td> */}
                             <td>Registered Admins</td>
                             <td>Disable/Delete</td>
                         </tr>
@@ -100,9 +100,9 @@ const TableRows = ({ adminData, colors, game, data, setData, editGameModel, setE
                     <a href={`${API_URL}/${game?.image}`} target='__blank'><img alt='img' src={`${API_URL}/${game?.image}`} className='h-[35px] w-[35px] rounded-[3px] object-cover object-center' /></a>
                     <span className='capitalize'>{game.name}</span>
                 </td>
-                <td>4.5K</td>
-                <td><FaIndianRupeeSign className='inline-block' />100.3K</td>
-                <td>Loss</td>
+                {/* <td>4.5K</td> */}
+                {/* <td><FaIndianRupeeSign className='inline-block' />100.3K</td> */}
+                {/* <td>Loss</td> */}
                 <td>{game?.admins?.length}</td>
                 <td>
                     <Switch size="small" defaultChecked={!game?.disabled} title='disable' onChange={fn_updateGame} />
@@ -240,7 +240,7 @@ const EditGameModel = ({ adminData, editGameModel, setEditGameModel, selectedGam
                     placeholder="Please select"
                     value={selectedAdmins}
                     onChange={handleSelectAdmin}
-                    style={{ width: '100%', height: '40px' }}
+                    style={{ width: '100%', minHeight: '40px' }}
                     options={options}
                     filterOption={(input: any, option: any) => option?.label.toLowerCase().includes(input.toLowerCase())}
                 />
