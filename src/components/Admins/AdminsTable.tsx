@@ -144,7 +144,7 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
                 style={{ fontFamily: "Roboto" }}
                 width={600}
             >
-                <p className="text-[22px] font-[700]">Give Poins to Admin</p>
+                <p className="text-[22px] font-[700]">Give Points to Admin</p>
                 <form className="pb-[15px] pt-[20px] flex flex-col gap-[10px]" onSubmit={fn_submit}>
                     <div className="flex flex-col">
                         <p className="font-[500]">Enter Points</p>
