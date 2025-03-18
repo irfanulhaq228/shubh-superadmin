@@ -52,8 +52,15 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
     const [domain, setDomain] = useState(admin?.domain);
     const [oddRate, setOddRate] = useState(admin?.oddRate);
     const [password, setPassword] = useState(admin?.password);
-    
+
     const [passwordType, setPasswordType] = useState("password");
+
+    const [name, setName] = useState(admin?.name);
+    const [oddRateType, setOddRateType] = useState("percentage");
+    const [bookmakerRate, setBookmakerRate] = useState(admin?.bookmakerRate);
+    const [bookmakerRateType, setBookmakerRateType] = useState("percentage");
+    const [fancyRate, setFancyRate] = useState(admin?.fancyRate);
+    const [fancyRateType, setFancyRateType] = useState("percentage");
 
     const handleSwitchChange = async (checked: boolean, e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
@@ -82,19 +89,16 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
     };
     const fn_edit = async (e: FormEvent) => {
         e.preventDefault();
-        if (email === "" || domain === "" || password === "" || oddRate === "") {
+        if (email === "" || domain === "" || password === "" || oddRate === "" || bookmakerRate === "" || fancyRate === "") {
             return toast.error("Fill All Fields");
         }
         const data = {
-            email, domain, password, oddRate
+            email, domain, password, oddRate, name, bookmakerRate, fancyRate, oddRateType, bookmakerRateType, fancyRateType
         }
-        if(email === admin.email && domain === admin.domain && password === admin.password && oddRate === admin.oddRate){
-            return toast.error("No Changes Found");
-        };
-        if(email === admin.email){
+        if (email === admin.email) {
             delete data.email;
         };
-        if(domain === admin.domain){
+        if (domain === admin.domain) {
             delete data.domain;
         }
         const response = await editAdminApi(data, admin._id);
@@ -204,17 +208,95 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
                         {passwordType === "text" && <FaRegEye className=" cursor-pointer absolute right-[15px] bottom-[13px]" onClick={() => setPasswordType("password")} />}
                     </div>
                     <hr className="mt-[15px] mb-[10px]" />
-                    <div className="flex flex-col">
-                        <p className="font-[500]">Enter Odd Rate (%)*</p>
-                        <input
-                            value={oddRate}
-                            type="number"
-                            step={0.01}
-                            onChange={(e) => setOddRate(e.target.value)}
-                            required
-                            placeholder="Odd Rate"
-                            className="w-full h-[40px] border rounded-[10px] px-[10px] font-[500] text-[15px] focus:outline-none focus:border-gray-400"
-                        />
+                    <div className="flex flex-col relative">
+                        <p className="font-[500]">Enter Odd Rate*</p>
+                        <div className="flex items-center gap-[10px]">
+                            <div className="flex gap-[5px]">
+                                <button
+                                    type="button"
+                                    className={`px-[10px] py-[5px] rounded-[5px] ${oddRateType === "percentage" ? "bg-gray-300" : "bg-white"}`}
+                                    onClick={() => setOddRateType("percentage")}
+                                >
+                                    Percentage
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`px-[10px] py-[5px] rounded-[5px] ${oddRateType === "number" ? "bg-gray-300" : "bg-white"}`}
+                                    onClick={() => setOddRateType("number")}
+                                >
+                                    Number
+                                </button>
+                            </div>
+                            <input
+                                value={oddRate}
+                                type="number"
+                                step={oddRateType === "percentage" ? 0.01 : 1}
+                                onChange={(e) => setOddRate(e.target.value)}
+                                required
+                                placeholder={oddRateType === "percentage" ? "Odd Rate (%)" : "Odd Rate"}
+                                className="w-full h-[40px] border rounded-[10px] px-[10px] font-[500] text-[15px] focus:outline-none focus:border-gray-400"
+                            />
+                        </div>
+                    </div>
+                    <div className="flex flex-col relative">
+                        <p className="font-[500]">Enter Bookmaker Odd Rate*</p>
+                        <div className="flex items-center gap-[10px]">
+                            <div className="flex gap-[5px]">
+                                <button
+                                    type="button"
+                                    className={`px-[10px] py-[5px] rounded-[5px] ${bookmakerRateType === "percentage" ? "bg-gray-300" : "bg-white"}`}
+                                    onClick={() => setBookmakerRateType("percentage")}
+                                >
+                                    Percentage
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`px-[10px] py-[5px] rounded-[5px] ${bookmakerRateType === "number" ? "bg-gray-300" : "bg-white"}`}
+                                    onClick={() => setBookmakerRateType("number")}
+                                >
+                                    Number
+                                </button>
+                            </div>
+                            <input
+                                value={bookmakerRate}
+                                type="number"
+                                step={bookmakerRateType === "percentage" ? 0.01 : 1}
+                                onChange={(e) => setBookmakerRate(e.target.value)}
+                                required
+                                placeholder={bookmakerRateType === "percentage" ? "Bookmaker Rate (%)" : "Bookmaker Rate"}
+                                className="w-full h-[40px] border rounded-[10px] px-[10px] font-[500] text-[15px] focus:outline-none focus:border-gray-400"
+                            />
+                        </div>
+                    </div>
+                    <div className="flex flex-col relative">
+                        <p className="font-[500]">Enter Fancy Rate*</p>
+                        <div className="flex items-center gap-[10px]">
+                            <div className="flex gap-[5px]">
+                                <button
+                                    type="button"
+                                    className={`px-[10px] py-[5px] rounded-[5px] ${fancyRateType === "percentage" ? "bg-gray-300" : "bg-white"}`}
+                                    onClick={() => setFancyRateType("percentage")}
+                                >
+                                    Percentage
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`px-[10px] py-[5px] rounded-[5px] ${fancyRateType === "number" ? "bg-gray-300" : "bg-white"}`}
+                                    onClick={() => setFancyRateType("number")}
+                                >
+                                    Number
+                                </button>
+                            </div>
+                            <input
+                                value={fancyRate}
+                                type="number"
+                                step={fancyRateType === "percentage" ? 0.01 : 1}
+                                onChange={(e) => setFancyRate(e.target.value)}
+                                required
+                                placeholder={fancyRateType === "percentage" ? "Fancy Rate (%)" : "Fancy Rate"}
+                                className="w-full h-[40px] border rounded-[10px] px-[10px] font-[500] text-[15px] focus:outline-none focus:border-gray-400"
+                            />
+                        </div>
                     </div>
                     <button className="w-full rounded-[10px] mt-[18px] text-white flex justify-center items-center h-[40px] font-[500] text-[16px]" style={{ backgroundColor: colors.text }}>
                         Submit

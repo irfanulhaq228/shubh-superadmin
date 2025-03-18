@@ -28,6 +28,11 @@ const Admins = ({ darkTheme }: any) => {
   const [domain, setDomain] = useState("");
   const [oddRate, setOddRate] = useState("");
   const [password, setPassword] = useState("");
+  const [oddRateType, setOddRateType] = useState("percentage");
+  const [bookmakerRate, setBookmakerRate] = useState("");
+  const [bookmakerRateType, setBookmakerRateType] = useState("percentage");
+  const [fancyRate, setFancyRate] = useState("");
+  const [fancyRateType, setFancyRateType] = useState("percentage");
 
   const fn_getAdmins = async () => {
     const response = await getAllAdminsApi();
@@ -43,11 +48,11 @@ const Admins = ({ darkTheme }: any) => {
 
   const fn_submit = async (e: FormEvent) => {
     e.preventDefault();
-    if (name === "" || email === "" || domain === "" || password === "" || oddRate === "") {
+    if (name === "" || email === "" || domain === "" || password === "" || oddRate === "" || bookmakerRate === "" || fancyRate === "") {
       return toast.error("Fill All Fields");
     }
     const data = {
-      name, email, domain, password, oddRate
+      name, email, domain, password, oddRate: Number(oddRate), oddRateType, bookmakerRate: Number(bookmakerRate), bookmakerRateType, fancyRate: Number(fancyRate), fancyRateType
     }
     const response = await createAdminApi(data);
     if (response?.status) {
@@ -57,6 +62,8 @@ const Admins = ({ darkTheme }: any) => {
       setEmail("");
       setDomain("");
       setPassword("");
+      setOddRate("");
+      setOddRateType("percentage");
       return toast.success("Admin Created");
     } else {
       toast.error(response?.message)
@@ -139,17 +146,97 @@ const Admins = ({ darkTheme }: any) => {
           </div>
           <hr className="mt-[15px] mb-[10px]" />
           <div className="flex flex-col relative">
-            <p className="font-[500]">Enter Odd Rate (%)*</p>
-            <input
-              value={oddRate}
-              type="number"
-              step={0.01}
-              onChange={(e) => setOddRate(e.target.value)}
-              required
-              placeholder="Odd Rate"
-              className="w-full h-[40px] border rounded-[10px] px-[10px] font-[500] text-[15px] focus:outline-none focus:border-gray-400"
-            />
-            <AiOutlinePercentage className="cursor-pointer absolute right-[15px] bottom-[13px]" />
+            <p className="font-[500]">Enter Odd Rate*</p>
+            <div className="flex items-center gap-[10px]">
+              <div className="flex gap-[5px]">
+                <button
+                  type="button"
+                  className={`px-[10px] py-[5px] rounded-[5px] ${oddRateType === "percentage" ? "bg-gray-300" : "bg-white"}`}
+                  onClick={() => setOddRateType("percentage")}
+                >
+                  Percentage
+                </button>
+                <button
+                  type="button"
+                  className={`px-[10px] py-[5px] rounded-[5px] ${oddRateType === "number" ? "bg-gray-300" : "bg-white"}`}
+                  onClick={() => setOddRateType("number")}
+                >
+                  Number
+                </button>
+              </div>
+              <input
+                value={oddRate}
+                type="number"
+                step={oddRateType === "percentage" ? 0.01 : 1}
+                onChange={(e) => setOddRate(e.target.value)}
+                required
+                placeholder={oddRateType === "percentage" ? "Odd Rate (%)" : "Odd Rate"}
+                className="w-full h-[40px] border rounded-[10px] px-[10px] font-[500] text-[15px] focus:outline-none focus:border-gray-400"
+              />
+            </div>
+            {oddRateType === "percentage" && <AiOutlinePercentage className="cursor-pointer absolute right-[15px] bottom-[13px]" />}
+          </div>
+          <div className="flex flex-col relative">
+            <p className="font-[500]">Enter Bookmaker Odd Rate*</p>
+            <div className="flex items-center gap-[10px]">
+              <div className="flex gap-[5px]">
+                <button
+                  type="button"
+                  className={`px-[10px] py-[5px] rounded-[5px] ${bookmakerRateType === "percentage" ? "bg-gray-300" : "bg-white"}`}
+                  onClick={() => setBookmakerRateType("percentage")}
+                >
+                  Percentage
+                </button>
+                <button
+                  type="button"
+                  className={`px-[10px] py-[5px] rounded-[5px] ${bookmakerRateType === "number" ? "bg-gray-300" : "bg-white"}`}
+                  onClick={() => setBookmakerRateType("number")}
+                >
+                  Number
+                </button>
+              </div>
+              <input
+                value={bookmakerRate}
+                type="number"
+                step={bookmakerRateType === "percentage" ? 0.01 : 1}
+                onChange={(e) => setBookmakerRate(e.target.value)}
+                required
+                placeholder={bookmakerRateType === "percentage" ? "Bookmaker Rate (%)" : "Bookmaker Rate"}
+                className="w-full h-[40px] border rounded-[10px] px-[10px] font-[500] text-[15px] focus:outline-none focus:border-gray-400"
+              />
+            </div>
+            {bookmakerRateType === "percentage" && <AiOutlinePercentage className="cursor-pointer absolute right-[15px] bottom-[13px]" />}
+          </div>
+          <div className="flex flex-col relative">
+            <p className="font-[500]">Enter Fancy Rate*</p>
+            <div className="flex items-center gap-[10px]">
+              <div className="flex gap-[5px]">
+                <button
+                  type="button"
+                  className={`px-[10px] py-[5px] rounded-[5px] ${fancyRateType === "percentage" ? "bg-gray-300" : "bg-white"}`}
+                  onClick={() => setFancyRateType("percentage")}
+                >
+                  Percentage
+                </button>
+                <button
+                  type="button"
+                  className={`px-[10px] py-[5px] rounded-[5px] ${fancyRateType === "number" ? "bg-gray-300" : "bg-white"}`}
+                  onClick={() => setFancyRateType("number")}
+                >
+                  Number
+                </button>
+              </div>
+              <input
+                value={fancyRate}
+                type="number"
+                step={fancyRateType === "percentage" ? 0.01 : 1}
+                onChange={(e) => setFancyRate(e.target.value)}
+                required
+                placeholder={fancyRateType === "percentage" ? "Fancy Rate (%)" : "Fancy Rate"}
+                className="w-full h-[40px] border rounded-[10px] px-[10px] font-[500] text-[15px] focus:outline-none focus:border-gray-400"
+              />
+            </div>
+            {fancyRateType === "percentage" && <AiOutlinePercentage className="cursor-pointer absolute right-[15px] bottom-[13px]" />}
           </div>
           <button className="w-full rounded-[10px] mt-[18px] text-white flex justify-center items-center h-[40px] font-[500] text-[16px]" style={{ backgroundColor: colors.text }}>
             Submit
