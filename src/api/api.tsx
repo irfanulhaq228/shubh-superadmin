@@ -90,6 +90,26 @@ export const editAdminApi = async (data: any, id: string) => {
     }
 };
 
+export const updateBetDelayApi = async (id: any, data: any) => {
+    try {
+        const token = Cookies.get('superAdminToken');
+        const response = await axios.post(`${URL}/website/betting-time?id=${id}`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        if (response?.status === 200) {
+            return { status: true, message: response?.data?.message };
+        }
+    } catch (error: any) {
+        if (error?.status === 400) {
+            return { status: false, message: error?.response?.data?.message };
+        } else {
+            return { status: false, message: "Network Error" }
+        }
+    }
+};
+
 export const adminStatusUpdateApi = async (value: boolean, id: string) => {
     try {
         const token = Cookies.get('superAdminToken');
