@@ -55,18 +55,18 @@ const Navbar = ({ pageName, darkTheme, colors }: any) => {
               <div className="absolute bg-red-500 w-[15px] h-[15px] text-[11px] flex justify-center items-center text-white font-[600] rounded-full leading-[12px] top-[-3px] right-[-3px]">1</div>
               {notificationPopup && (
                 <div className="absolute z-[99] w-[200px] border bg-white shadow-lg top-[30px] right-0 rounded-[10px] p-[10px] flex flex-col gap-[10px]">
-                  <Link to={"/users"} className="flex items-center gap-[8px] rounded-[10px] p-[10px]" style={{backgroundColor: colors.bg}}>
+                  <Link to={"/users"} className="flex items-center gap-[8px] rounded-[10px] p-[10px]" style={{ backgroundColor: colors.bg }}>
                     <IoNotificationsCircle className="text-[35px]" style={{ color: colors.text }} />
                     <div>
-                      <p className="text-[14px] font-[600] leading-[15px]" style={{color: colors.text}}>New User Added</p>
-                      <p className="text-[13px] font-[500]" style={{color: colors.subText}}>1h</p>
+                      <p className="text-[14px] font-[600] leading-[15px]" style={{ color: colors.text }}>New User Added</p>
+                      <p className="text-[13px] font-[500]" style={{ color: colors.subText }}>1h</p>
                     </div>
                   </Link>
-                  <Link to={"/games"} className="flex items-center gap-[8px] rounded-[10px] p-[10px]" style={{backgroundColor: colors.bg}}>
+                  <Link to={"/games"} className="flex items-center gap-[8px] rounded-[10px] p-[10px]" style={{ backgroundColor: colors.bg }}>
                     <IoNotificationsCircle className="text-[35px]" style={{ color: colors.text }} />
                     <div>
-                      <p className="text-[14px] font-[600] leading-[15px]" style={{color: colors.text}}>New Game Added</p>
-                      <p className="text-[13px] font-[500]" style={{color: colors.subText}}>1d</p>
+                      <p className="text-[14px] font-[600] leading-[15px]" style={{ color: colors.text }}>New Game Added</p>
+                      <p className="text-[13px] font-[500]" style={{ color: colors.subText }}>1d</p>
                     </div>
                   </Link>
                 </div>
@@ -91,7 +91,7 @@ const Navbar = ({ pageName, darkTheme, colors }: any) => {
               <FaUser style={{ color: colors.text }} />
               {profilePopup && (
                 <div className="absolute z-[99] border bg-white shadow-lg top-[40px] right-0 rounded-[7px] p-[7px] flex flex-col gap-[10px]">
-                  <button className="bg-white rounded-[7px] text-[14px] font-[500] p-[7px] w-[130px]" style={{backgroundColor: colors.bg, color: colors.text}} onClick={fn_logout}>
+                  <button className="bg-white rounded-[7px] text-[14px] font-[500] p-[7px] w-[130px]" style={{ backgroundColor: colors.bg, color: colors.text }} onClick={fn_logout}>
                     <TbLogout2 className="inline-block text-[16px] mt-[-2px] mr-1.5" />Logout
                   </button>
                 </div>
