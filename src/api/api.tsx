@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const URL = "https://backend.shubhexchange.com";
+// const URL = "https://test-backend.shubhexchange.com";
 
 export const formatDate = (dateString: any) => {
     const optionsDate: any = { day: '2-digit', month: 'short', year: 'numeric' };
@@ -13,6 +14,42 @@ export const formatDate = (dateString: any) => {
 
     return `${formattedDate}, ${formattedTime}`;
 };
+
+export const fn_getPendingBets = async (selectedGameName: string | null, selectedSide: string | null, selectedMarketName: string | null) => {
+    try {
+        const token = Cookies.get('superAdminToken');
+        const response = await axios.get(`${URL}/betting/super-admin?${selectedGameName ? `gameName=${selectedGameName}` : ""}&${selectedSide ? `side=${selectedSide}` : ""}&${selectedMarketName ? `marketName=${selectedMarketName}` : ""}`);
+        if (response.status === 200) {
+            return {
+                status: true,
+                data: response?.data?.data,
+                gameNames: response?.data?.gameNames,
+                marketNames: response?.data?.marketNames,
+            }
+        }
+    } catch (error: any) {
+        if (error?.status === 400) {
+            return { status: false, message: error?.response?.data?.message };
+        } else {
+            return { status: false, message: "Network Error" }
+        }
+    }
+}
+
+export const fn_betsResultsManuallyApi = async (data: any) => {
+    try {
+        const response = await axios.post(`${URL}/betting/super-admin/result`, data);
+        if (response.status === 200) {
+            return { status: true }
+        }
+    } catch (error: any) {
+        if (error?.status === 400) {
+            return { status: false, message: error?.response?.data?.message };
+        } else {
+            return { status: false, message: "Network Error" }
+        }
+    }
+}
 
 export const superAdminLoginApi = async (data: { email: string; password: string }) => {
     try {

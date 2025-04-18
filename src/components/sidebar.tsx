@@ -7,6 +7,7 @@ import { updateSmallsidebar } from "../features/features";
 import { FaUser } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { MdCasino } from "react-icons/md";
+import { GrAnnounce } from "react-icons/gr";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { RiArrowLeftDoubleLine } from "react-icons/ri";
 
@@ -64,6 +65,15 @@ const Sidebar = ({ colors, path }: any) => {
           path={path}
           url={"/games"}
           icon={<MdCasino className="text-[19px] me-[3px]" />}
+          smallSidebar={smallSidebar}
+        />
+        <Menus
+          title={"Bets Result"}
+          colors={colors}
+          pathEquals={"bets-result"}
+          path={path}
+          url={"/bets-result"}
+          icon={<GrAnnounce className="text-[19px] me-[3px]" />}
           smallSidebar={smallSidebar}
         />
       </div>

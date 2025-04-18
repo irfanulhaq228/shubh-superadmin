@@ -9,6 +9,7 @@ import Login from "./pages/Auth/Login";
 import Profile from "./pages/profile/page";
 import Admins from "./pages/Admins/page";
 import Games from "./pages/GamesConfiguration/page";
+import BetsResult from "./pages/Bets-Result/bets-result";
 
 function App() {
   const darkTheme = useSelector((state: any) => state.dashboardDarkTheme);
@@ -19,6 +20,7 @@ function App() {
       <Route path="/dashboard" element={<Profile darkTheme={darkTheme} />} />
       <Route path="/admins" element={<Admins darkTheme={darkTheme} />} />
       <Route path="/games" element={<Games darkTheme={darkTheme} />} />
+      <Route path="/bets-result" element={<BetsResult darkTheme={darkTheme} />} />
     </Routes>
   );
 }
