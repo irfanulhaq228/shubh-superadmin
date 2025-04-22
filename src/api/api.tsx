@@ -15,6 +15,93 @@ export const formatDate = (dateString: any) => {
     return `${formattedDate}, ${formattedTime}`;
 };
 
+export const fn_getSportsApi = async () => {
+    try {
+        const response = await axios.get(`${URL}/new/all-sports`);
+        if (response.status === 200) {
+            return {
+                status: true,
+                data: response?.data?.data
+            }
+        }
+    } catch (error: any) {
+        if (error?.status === 400) {
+            return { status: false, message: error?.response?.data?.message };
+        } else {
+            return { status: false, message: "Network Error" }
+        }
+    }
+}
+
+export const fn_getEventsBySportApi = async (id: any) => {
+    try {
+        const response = await axios.get(`${URL}/new/events-by-sport?sportId=${id}`);
+        if (response.status === 200) {
+            return {
+                status: true,
+                data: response?.data?.data
+            }
+        }
+    } catch (error: any) {
+        if (error?.status === 400) {
+            return { status: false, message: error?.response?.data?.message };
+        } else {
+            return { status: false, message: "Network Error" }
+        }
+    }
+}
+
+export const fn_getMarketsByEventApi = async (id: any) => {
+    try {
+        const response = await axios.get(`${URL}/new/markets-by-event?eventId=${id}`);
+        if (response.status === 200) {
+            return {
+                status: true,
+                data: response?.data?.data
+            }
+        }
+    } catch (error: any) {
+        if (error?.status === 400) {
+            return { status: false, message: error?.response?.data?.message };
+        } else {
+            return { status: false, message: "Network Error" }
+        }
+    }
+}
+
+export const fn_getSelectionsByEventAndMarket = async (eventId: any, marketId: any) => {
+    try {
+        const response = await axios.get(`${URL}/new/selections-by-market?eventId=${eventId}&marketId=${marketId}`);
+        if (response.status === 200) {
+            return {
+                status: true,
+                data: response?.data?.data
+            }
+        }
+    } catch (error: any) {
+        if (error?.status === 400) {
+            return { status: false, message: error?.response?.data?.message };
+        } else {
+            return { status: false, message: "Network Error" }
+        }
+    }
+}
+
+export const fn_betsResultApi = async (obj: any) => {
+    try {
+        const response = await axios.post(`${URL}/bets-result/`, obj);
+        if (response?.status === 200) {
+            return { status: true, message: "Bets Result Created" }
+        }
+    } catch (error: any) {
+        if (error?.status === 400) {
+            return { status: false, message: error?.response?.data?.message };
+        } else {
+            return { status: false, message: "Network Error" }
+        }
+    }
+}
+
 export const fn_getPendingBets = async (selectedGameName: string | null, selectedSide: string | null, selectedMarketName: string | null) => {
     try {
         const token = Cookies.get('superAdminToken');

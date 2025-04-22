@@ -67,12 +67,21 @@ const Sidebar = ({ colors, path }: any) => {
           icon={<MdCasino className="text-[19px] me-[3px]" />}
           smallSidebar={smallSidebar}
         />
-        <Menus
+        {/* <Menus
           title={"Bets Result"}
           colors={colors}
           pathEquals={"bets-result"}
           path={path}
           url={"/bets-result"}
+          icon={<GrAnnounce className="text-[19px] me-[3px]" />}
+          smallSidebar={smallSidebar}
+        /> */}
+        <Menus
+          title={"Bets Results"}
+          colors={colors}
+          pathEquals={"bets-results"}
+          path={path}
+          url={"/bets-results"}
           icon={<GrAnnounce className="text-[19px] me-[3px]" />}
           smallSidebar={smallSidebar}
         />
