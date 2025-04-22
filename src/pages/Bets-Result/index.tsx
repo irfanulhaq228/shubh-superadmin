@@ -154,11 +154,13 @@ const BetsResults = ({ darkTheme }: any) => {
     };
 
     const fn_updateResult = async (eventId: any, marketId: any, runnerName: any, result: any, resultType: any) => {
-        if (inputMarket !== marketId || inputRunnerName !== runnerName) {
-            return toast.error("Please Enter Result First");
-        }
-        if (!Number(result)) {
-            return toast.error("Please Enter in Number");
+        if (resultType === "custom") {
+            if (inputMarket !== marketId || inputRunnerName !== runnerName) {
+                return toast.error("Please Enter Result First");
+            };
+            if (!Number(result)) {
+                return toast.error("Please Enter in Number");
+            };
         };
         const obj = {
             eventId,
