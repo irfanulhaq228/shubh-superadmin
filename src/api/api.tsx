@@ -89,7 +89,7 @@ export const fn_getSelectionsByEventAndMarket = async (eventId: any, marketId: a
 
 export const fn_betsResultApi = async (obj: any) => {
     try {
-        const response = await axios.post(`${URL}/bets-result/`, obj);
+        const response = await axios.post(`${URL}/bets-result`, obj);
         if (response?.status === 200) {
             return { status: true, message: "Bets Result Created" }
         }

@@ -166,7 +166,7 @@ const BetsResults = ({ darkTheme }: any) => {
             eventId,
             marketId,
             runnerName,
-            result: Number(result),
+            result: resultType === "auto" ? result : Number(result),
             resultType
         };
         const response = await fn_betsResultApi(obj);
