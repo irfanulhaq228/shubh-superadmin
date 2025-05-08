@@ -10,6 +10,7 @@ import { MdCasino } from "react-icons/md";
 import { GrAnnounce } from "react-icons/gr";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { RiArrowLeftDoubleLine } from "react-icons/ri";
+import { FaIndianRupeeSign } from "react-icons/fa6";
 
 const Sidebar = ({ colors, path }: any) => {
   const dispatch = useDispatch();
@@ -83,6 +84,15 @@ const Sidebar = ({ colors, path }: any) => {
           path={path}
           url={"/bets-results"}
           icon={<GrAnnounce className="text-[19px] me-[3px]" />}
+          smallSidebar={smallSidebar}
+        />
+        <Menus
+          title={"Payment Requests"}
+          colors={colors}
+          pathEquals={"payment-requests"}
+          path={path}
+          url={"/payment-requests"}
+          icon={<FaIndianRupeeSign className="text-[19px] me-[3px]" />}
           smallSidebar={smallSidebar}
         />
       </div>

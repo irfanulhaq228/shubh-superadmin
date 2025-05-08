@@ -51,6 +51,42 @@ export const fn_getEventsBySportApi = async (id: any) => {
     }
 }
 
+export const fn_getAdminsDepositApi = async () => {
+    try {
+        const response = await axios.get(`${URL}/super-admin/get-deposits`);
+        if (response.status === 200) {
+            return {
+                status: true,
+                data: response?.data?.data
+            }
+        }
+    } catch (error: any) {
+        if (error?.status === 400) {
+            return { status: false, message: error?.response?.data?.message };
+        } else {
+            return { status: false, message: "Network Error" }
+        }
+    }
+}
+
+export const fn_updateAdminsDepositApi = async (id: any, data: any) => {
+    try {
+        const response = await axios.put(`${URL}/super-admin/update-deposit/${id}`, data);
+        if (response.status === 200) {
+            return {
+                status: true,
+                message: "Data Updated"
+            }
+        }
+    } catch (error: any) {
+        if (error?.status === 400) {
+            return { status: false, message: error?.response?.data?.message };
+        } else {
+            return { status: false, message: "Network Error" }
+        }
+    }
+}
+
 export const fn_getMarketsByEventApi = async (id: any) => {
     try {
         const response = await axios.get(`${URL}/new/markets-by-event?eventId=${id}`);

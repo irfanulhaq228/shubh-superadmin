@@ -11,6 +11,7 @@ import Profile from "./pages/profile/page";
 import BetsResults from "./pages/Bets-Result";
 import Games from "./pages/GamesConfiguration/page";
 import BetsResult from "./pages/Bets-Result/bets-result";
+import PaymentRequest from "./pages/PaymentRequest/page";
 
 function App() {
   const darkTheme = useSelector((state: any) => state.dashboardDarkTheme);
@@ -23,6 +24,7 @@ function App() {
       <Route path="/games" element={<Games darkTheme={darkTheme} />} />
       <Route path="/bets-result" element={<BetsResult darkTheme={darkTheme} />} />
       <Route path="/bets-results" element={<BetsResults darkTheme={darkTheme} />} />
+      <Route path="/payment-requests" element={<PaymentRequest darkTheme={darkTheme} />} />
     </Routes>
   );
 }
