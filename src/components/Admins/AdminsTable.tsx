@@ -2,10 +2,11 @@ import { Modal, Switch } from 'antd';
 import { FormEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { FaRegEdit, FaRegEyeSlash } from 'react-icons/fa';
+import { FaMinus, FaPlus, FaRegEdit, FaRegEyeSlash } from 'react-icons/fa';
 import { FaIndianRupeeSign, FaRegEye } from 'react-icons/fa6';
-import { adminStatusUpdateApi, adminWalletUpdateApi, editAdminApi, updateBetDelayApi } from '../../api/api';
+import { adminStatusUpdateApi, adminWalletUpdateApi, editAdminApi, updateBetDelayApi, updateCreditReferenceApi } from '../../api/api';
 import Loader from '../Loader';
+import { PiHandArrowUpFill } from 'react-icons/pi';
 
 const AdminsTable = ({ colors, data, fn_getAdmins }: any) => {
     return (
@@ -23,8 +24,9 @@ const AdminsTable = ({ colors, data, fn_getAdmins }: any) => {
                             <td>Domain</td>
                             <td>Odd Rate</td>
                             <td>Account Wallet</td>
-                            <td>Action</td>
                             <td>Bet Delay</td>
+                            <td>Credit Reference</td>
+                            <td>Action</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,6 +56,9 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
     const [betDelayModal, setBetDelayModal] = useState(false);
     const [selectedAdmin, setSelectedAdmin] = useState<any>(null);
     const [givePointsModel, setGivePointsModel] = useState(false);
+    const [creditReferenceModal, setCreditReferenceModal] = useState(false);
+    const [creditReferenceType, setCreditReferenceType] = useState("");
+    const [creditReferenceValue, setCreditReferenceValue] = useState("");
 
     const [email, setEmail] = useState(admin?.email);
     const [domain, setDomain] = useState(admin?.domain);
@@ -133,6 +138,23 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
             return toast.success(response?.message || 'Something went wrong');
         }
     };
+
+    const handleCreditReferenceSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        if (creditReferenceValue === "") {
+            return toast.error('Enter Credit Reference');
+        };
+        const response = await updateCreditReferenceApi(admin?._id, { creditTransaction: creditReferenceValue, sign: creditReferenceType });
+        if (response?.status) {
+            fn_getAdmins();
+            setCreditReferenceValue("");
+            toast.success("Admin Updated");
+            setCreditReferenceModal(false);
+        } else {
+            toast.error(response?.message || "Network Error");
+        }
+    };
+
     return (
         <>
             <tr
@@ -145,6 +167,33 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
                 <td><a href={admin?.domain} target='__blank' className='hover:underline'>{admin?.domain}</a></td>
                 <td>{admin?.oddRate || 0}%</td>
                 <td><FaIndianRupeeSign className='inline-block me-[4px]' />{admin?.wallet}</td>
+                <td>{admin?.delayTime || '0'} ms<FaRegEdit className='ms-[15px] text-[18px] cursor-pointer inline-block mt-[-3px]' style={{ color: colors.text }} onClick={() => { setBetDelayModal(!betDelayModal); setSelectedAdmin({ id: admin?._id, }); setBetDelay(admin?.delayTime || '0') }} /></td>
+                <td>
+                    <div className='flex items-center'>
+                        <FaIndianRupeeSign className='mt-[2px]' />
+                        <p className='mt-[2px]'>{admin?.creditTransaction}</p>
+                        <button
+                            className='text-[11px] rounded-[5px] ms-[15px] h-[30px] w-[30px] leading-[32px] text-center px-[9px]'
+                            style={{ backgroundColor: colors.text, color: colors.bg }}
+                            onClick={() => {
+                                setCreditReferenceType("-");
+                                setCreditReferenceModal(true);
+                            }}
+                        >
+                            <FaMinus className='scale-125' />
+                        </button>
+                        <button
+                            className='text-[11px] rounded-[5px] ms-[5px] h-[30px] w-[30px] leading-[32px] text-center px-[9px]'
+                            style={{ backgroundColor: colors.text, color: colors.bg }}
+                            onClick={() => {
+                                setCreditReferenceType("+");
+                                setCreditReferenceModal(true);
+                            }}
+                        >
+                            <FaPlus className='scale-125' />
+                        </button>
+                    </div>
+                </td>
                 <td className='flex items-center h-[60px]'>
                     <Switch size="small" defaultChecked={admin.verified} title='disable' onClick={handleSwitchChange} />
                     <FaRegEdit className='ms-[10px] text-[18px] cursor-pointer' style={{ color: colors.text }} onClick={() => setEditModel(true)} />
@@ -159,7 +208,6 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
                         Give Points
                     </button>
                 </td>
-                <td>{admin?.delayTime || '0'} ms<FaRegEdit className='ms-[15px] text-[18px] cursor-pointer inline-block mt-[-3px]' style={{ color: colors.text }} onClick={() => { setBetDelayModal(!betDelayModal); setSelectedAdmin({ id: admin?._id, }); setBetDelay(admin?.delayTime || '0') }} /></td>
             </tr>
             {/* give points model */}
             <Modal
@@ -351,6 +399,35 @@ const TableRows = ({ admin, index, colors, fn_getAdmins }: any) => {
                     </div>
                     <button className={`w-full rounded-[10px] mt-[18px] text-white flex justify-center items-center h-[40px] font-[500] text-[16px] ${loader ? "cursor-not-allowed" : "cursor-pointer"}`} disabled={loader} style={{ backgroundColor: colors.text }}>
                         {loader ? <Loader color={colors.bg} size={20} /> : "Submit"}
+                    </button>
+                </form>
+            </Modal>
+            {/* Credit Reference Modal */}
+            <Modal
+                title=""
+                open={creditReferenceModal}
+                onOk={() => setCreditReferenceModal(false)}
+                onCancel={() => setCreditReferenceModal(false)}
+                centered
+                footer={null}
+                style={{ fontFamily: "Roboto" }}
+                width={600}
+            >
+                <p className="text-[22px] font-[700]">
+                    {creditReferenceType === "+" ? "Add Credit Reference" : "Minus Credit Reference"}
+                </p>
+                <form className="pb-[15px] pt-[20px] flex flex-col gap-[10px]" onSubmit={handleCreditReferenceSubmit}>
+                    <div className="flex flex-col">
+                        <p className="font-[500]">Enter Credit Reference</p>
+                        <input
+                            type='number'
+                            value={creditReferenceValue}
+                            onChange={(e) => setCreditReferenceValue(e.target.value)}
+                            className="w-full h-[40px] border rounded-[10px] px-[10px] font-[500] text-[15px] focus:outline-none focus:border-gray-400"
+                        />
+                    </div>
+                    <button className="w-full rounded-[10px] mt-[18px] text-white flex justify-center items-center h-[40px] font-[500] text-[16px]" style={{ backgroundColor: colors.text }}>
+                        Submit
                     </button>
                 </form>
             </Modal>
